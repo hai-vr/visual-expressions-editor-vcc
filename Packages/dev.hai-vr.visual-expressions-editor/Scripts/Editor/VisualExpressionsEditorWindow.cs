@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -242,14 +241,14 @@ namespace Hai.VisualExpressionsEditor.Scripts.Editor
                 EditorGUILayout.BeginHorizontal();
                 EditorGUILayout.BeginVertical(GUILayout.Width(300));
                 GUILayout.Box(_clipTextureNullable);
-                var all0ValueBindings = ImmutableHashSet<EditorCurveBinding>.Empty;
+                var all0ValueBindings = new HashSet<EditorCurveBinding>();
                 if (clip != null)
                 {
                     var bindings = AnimationUtility.GetCurveBindings(clip);
-                    all0ValueBindings = bindings
+                    all0ValueBindings = new HashSet<EditorCurveBinding>(bindings
                         .Where(binding => binding.type == typeof(SkinnedMeshRenderer) && binding.propertyName.StartsWith("blendShape."))
                         .Where(binding => AnimationUtility.GetEditorCurve(clip, binding).keys.All(keyframe => keyframe.value == 0f))
-                        .ToImmutableHashSet();
+                        .ToArray());
                     if (all0ValueBindings.Count > 0)
                     {
                         EditorGUILayout.BeginHorizontal();
@@ -426,7 +425,7 @@ namespace Hai.VisualExpressionsEditor.Scripts.Editor
             }
         }
 
-        private void DisplayBlendshapeSelector(int width, int screenWidth, ImmutableHashSet<EditorCurveBinding> all0ValueBindings, bool summaryView)
+        private void DisplayBlendshapeSelector(int width, int screenWidth, HashSet<EditorCurveBinding> all0ValueBindings, bool summaryView)
         {
             var mod = Mathf.Max(1, screenWidth / (width + 15));
             var highlightColor = EditorGUIUtility.isProSkin ? new Color(0.92f, 0.62f, 0.25f) : new Color(0.74f, 0.47f, 0.1f);
@@ -435,7 +434,7 @@ namespace Hai.VisualExpressionsEditor.Scripts.Editor
             var currentFrame = isLoopEdit ? ReflectiveGetFirstAnimationTabFrame() : 0;
             var currentTime = (currentFrame * 1f) / (clip != null ? clip.frameRate : 60);
 
-            var allBindings = clip != null ? AnimationUtility.GetCurveBindings(clip).ToImmutableHashSet() : ImmutableHashSet<EditorCurveBinding>.Empty;
+            var allBindings = clip != null ? new HashSet<EditorCurveBinding>(AnimationUtility.GetCurveBindings(clip)) : new HashSet<EditorCurveBinding>();
             var layoutActive = false;
             var layoutCounter = 0;
             for (var smrIndex = 0; smrIndex < _allSkinnedMeshes.Length; smrIndex++)
