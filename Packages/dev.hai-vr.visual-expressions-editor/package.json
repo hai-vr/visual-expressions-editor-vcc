@@ -1,7 +1,7 @@
 {
   "name": "dev.hai-vr.visual-expressions-editor",
   "displayName": "Haï ~ Visual Expressions Editor",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "unity": "2019.4",
   "description": "Visual Expressions Editor https://docs.hai-vr.dev/docs/products/visual-expressions-editor",
   "vrchatVersion" : "2022.1.1",
@@ -10,6 +10,9 @@
   },
   "vpmDependencies": {
     "dev.hai-vr.resilience.toolkit" : "1.0.x"
+  },
+  "legacyFolders" : {
+    "Assets\\Hai\\VisualExpressionsEditor" : "ef06eef694e8e9244a169d959865963a"
   },
   "url" : "https://docs.hai-vr.dev/docs/products/visual-expressions-editor"
 }
